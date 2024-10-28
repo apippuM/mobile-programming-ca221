@@ -1,6 +1,8 @@
 # whatsapp_clone_app
 
-A new Flutter project.
+Whatsapp Clone
+Nama  : Muhamad Afifuddin
+NIM   : 220010027
 
 ## Getting Started
 
