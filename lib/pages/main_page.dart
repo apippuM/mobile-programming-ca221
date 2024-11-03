@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/pages/home_page.dart';
+import 'package:myapp/pages/search_page.dart';
 import 'package:myapp/resources/colors.dart';
 
 class MainPage extends StatefulWidget {
@@ -12,21 +13,19 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   // Variabel untuk menyimpan index halaman yang aktif
-  int _seletedPageIndex = 0;
+  int _selectedPageIndex = 0;
 
   // Fungsi untuk mengubah index halaman yang aktif
   void _onPageChanged(int index) {
     setState(() {
-      _seletedPageIndex = index;
+      _selectedPageIndex = index;
     });
   }
 
   // List halaman yang tersedia
   final List<Widget> _pages = [
     const HomePage(),
-    const Center(
-      child: Text('Search'),
-    ),
+    const SearchBarApp(),
     const Center(
       child: Text('Create Moment'),
     ),
@@ -48,7 +47,7 @@ class _MainPageState extends State<MainPage> {
         ),
         centerTitle: true,
       ),
-      body: _pages[_seletedPageIndex],
+      body: _pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -100,7 +99,7 @@ class _MainPageState extends State<MainPage> {
         selectedItemColor: primaryColor,
         unselectedItemColor: secondaryColor,
         onTap: _onPageChanged,
-        currentIndex: _seletedPageIndex,
+        currentIndex: _selectedPageIndex,
       ),
     );
   }
