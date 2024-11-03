@@ -1,5 +1,5 @@
 # myapp
 
-Nama: Muhamad Afifuddin
-NIM: 220010027
-Kelas: CA221
+Nama: Muhamad Afifuddin <br />
+NIM: 220010027 <br />
+Kelas: CA221 <br />
