@@ -85,7 +85,7 @@ class _CreateCommentState extends State<CreateComment> {
                     backgroundColor: primaryColor,
                     foregroundColor: Colors.white
                   ),
-                  child: const Text('Create Moment'),
+                  child: const Text('Send'),
                 ),
                 const SizedBox(height: mediumSize,),
                 OutlinedButton(
