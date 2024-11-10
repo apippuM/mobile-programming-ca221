@@ -1,8 +1,12 @@
+import 'package:faker/faker.dart' as faker;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:myapp/models/moments.dart';
 import 'package:myapp/pages/home_page.dart';
+import 'package:myapp/pages/moment_create_page.dart';
 import 'package:myapp/pages/search_page.dart';
 import 'package:myapp/resources/colors.dart';
+import 'package:nanoid2/nanoid2.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -15,30 +19,65 @@ class _MainPageState extends State<MainPage> {
   // Variabel untuk menyimpan index halaman yang aktif
   int _selectedPageIndex = 0;
 
+  final _faker = faker.Faker();
+  // List moment
+  List<Moment> moments = [];
+
   // Fungsi untuk mengubah index halaman yang aktif
   void _onPageChanged(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
+    if (index == 2) {
+      //Navigasi ke halaman create moment
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return MomentCreatePage(onSaved: _addMoment);
+      }));
+    } else {
+      //JIka tidak index 2, ke halaman yang sesuai
+      setState(() {
+        _selectedPageIndex = index;
+      });
+    }
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    moments = List.generate(
+      2,
+      (index) => Moment(
+        id: nanoid(),
+        momentDate: _faker.date.dateTime(),
+        creator: _faker.person.name(),
+        location: _faker.address.city(),
+        imageUrl: 'https://picsum.photos/800/600?random=$index',
+        caption: _faker.lorem.sentence(),
+        likeCount: faker.random.integer(1000),
+        commentCount: faker.random.integer(100),
+        bookmarkCount: faker.random.integer(50),
+      ),
+    );
   }
 
-  // List halaman yang tersedia
-  final List<Widget> _pages = [
-    const HomePage(),
-    const SearchBarApp(),
-    const Center(
-      child: Text('Create Moment'),
-    ),
-    const Center(
-      child: Text('Activity'),
-    ),
-    const Center(
-      child: Text('Profile'),
-    ),
-  ];
-
+  void _addMoment(Moment newMoment) {
+    setState(() {
+      moments.add(newMoment);
+    });
+  }
   @override
   Widget build(BuildContext context) {
+  // List halaman yang tersedia
+    final List<Widget> pages = [
+      HomePage(moments: moments),
+      const SearchBarApp(),
+      const Center(
+        child: Text('Create Moment'),
+      ),
+      const Center(
+        child: Text('Activity'),
+      ),
+      const Center(
+        child: Text('Profile'),
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -47,7 +86,7 @@ class _MainPageState extends State<MainPage> {
         ),
         centerTitle: true,
       ),
-      body: _pages[_selectedPageIndex],
+      body: pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -100,6 +139,8 @@ class _MainPageState extends State<MainPage> {
         unselectedItemColor: secondaryColor,
         onTap: _onPageChanged,
         currentIndex: _selectedPageIndex,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
       ),
     );
   }
