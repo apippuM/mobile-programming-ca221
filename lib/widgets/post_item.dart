@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/moments.dart';
+import 'package:myapp/pages/create_comment.dart';
 import 'package:myapp/resources/dimentions.dart';
 import 'package:myapp/widgets/post_action.dart';
 import 'package:myapp/widgets/post_title.dart';
@@ -40,14 +41,25 @@ class PostItem extends StatelessWidget {
                       PostAction(
                         icon: 'assets/icons/fi-br-heart.svg',
                         label: moment.likeCount.toString(),
+                        onTap: () {
+
+                        },
                       ),
                       PostAction(
                         icon: 'assets/icons/fi-br-comment.svg',
                         label: moment.commentCount.toString(),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                            return const CreateComment();
+                          }));
+                        },
                       ),
                       PostAction(
                         icon: 'assets/icons/fi-br-bookmark.svg',
                         label: moment.bookmarkCount.toString(),
+                        onTap: () {
+
+                        },
                       ),
                     ],
                   ),
