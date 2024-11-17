@@ -35,8 +35,8 @@ class _CreateCommentState extends State<CreateComment> {
     super.initState();
     if (widget.selectedComment != null) {
       final selectedComment = widget.selectedComment!;
-      _dataComment['creator'] = selectedComment.creator;
-      _dataComment['comment'] = selectedComment.comment;
+      _creatorController.text = selectedComment.creator;
+      _commentController.text = selectedComment.comment;
       _selectedDate = selectedComment.createdAt;
     } else {
       _selectedDate = DateTime.now();
@@ -64,7 +64,9 @@ class _CreateCommentState extends State<CreateComment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Comment'),
+        title: Text(
+          '${widget.selectedComment != null ? 'Update' : 'Create'} Comment'
+          ),
         centerTitle: true
       ),
       body: Padding(

@@ -28,7 +28,6 @@ class _CommentPageState extends State<CommentPage> {
   final _dateFormat = DateFormat('dd MMM yyyy');
 
   @override
-
   void initState() {
     super.initState();
     comments = List.generate(
@@ -56,18 +55,60 @@ class _CommentPageState extends State<CommentPage> {
   }
   void onUpdate(String commentId) {
     final selectedComment = comments.firstWhere((comment) => comment.id == commentId);
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return CreateComment(
-        onSaved: _saveComment,
-        selectedComment: selectedComment
+    showDialog(context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Update Comment'),
+        content: const Text('Are you sure you want to update this comment?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: const Text('Update'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return CreateComment(
+                  onSaved: _saveComment,
+                  selectedComment: selectedComment
+                );
+              }));
+            },
+          ),
+        ]
       );
-    }));
+    });
   }
 
   void onDelete(String commentId) {
     final selectedComment = getCommentById(commentId);
-    setState(() {
-      comments.remove(selectedComment);
+    showDialog(context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Delete Comment'),
+        content: const Text('Are you sure you want to delete this comment?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: const Text('Delete'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              setState(() {
+                comments.remove(selectedComment);
+              });
+            },
+          ),
+        ]
+      );
     });
   }
 
@@ -89,24 +130,31 @@ class _CommentPageState extends State<CommentPage> {
             leading: const CircleAvatar(
               backgroundImage: NetworkImage('https://i.pravatar.cc/150')
             ),
-            trailing: PopupMenuButton(
-              onSelected: (value) {
-                if (value == 'Edit') {
-                  onUpdate(comment.id);
-                } else if (value == 'Delete') {
-                  onDelete(comment.id);
-                }
-              },
-              itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: 'Edit',
-                  child: Text('Edit')
+            trailing: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                Text(_dateFormat.format(comment.createdAt)), 
+                PopupMenuButton(
+                  onSelected: (value) {
+                    if (value == 'Edit') {
+                      onUpdate(comment.id);
+                    } else if (value == 'Delete') {
+                      onDelete(comment.id);
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'Edit',
+                      child: Text('Edit')
+                    ),
+                    const PopupMenuItem(
+                      value: 'Delete',
+                      child: Text('Delete')
+                    )
+                  ],
                 ),
-                const PopupMenuItem(
-                  value: 'Delete',
-                  child: Text('Delete')
-                )
-              ],
+              ]
             ),
           )).toList(),
         ),
@@ -115,7 +163,7 @@ class _CommentPageState extends State<CommentPage> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return CreateComment(
-              onSaved: (newMoment) {}
+              onSaved: _saveComment
             );
           }));
         },

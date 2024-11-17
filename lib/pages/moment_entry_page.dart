@@ -92,7 +92,8 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${widget.selectedMoment == null ? 'Create' : 'Update'} Moment'),
+          '${widget.selectedMoment == null ? 'Create' : 'Update'} Moment'
+          ),
         centerTitle: true
       ),
       body: Padding(
