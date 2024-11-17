@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/moments.dart';
 import 'package:myapp/pages/home_page.dart';
-import 'package:myapp/pages/moment_create_page.dart';
+import 'package:myapp/pages/moment_entry_page.dart';
 import 'package:myapp/pages/search_page.dart';
 import 'package:myapp/resources/colors.dart';
 import 'package:nanoid2/nanoid2.dart';
@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
     if (index == 2) {
       //Navigasi ke halaman create moment
       Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        return MomentCreatePage(onSaved: _saveMoment);
+        return MomentEntryPage(onSaved: _saveMoment);
       }));
     } else {
       //JIka tidak index 2, ke halaman yang sesuai
@@ -92,7 +92,7 @@ class _MainPageState extends State<MainPage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                  return MomentCreatePage(
+                  return MomentEntryPage(
                     onSaved: _saveMoment,
                     selectedMoment: selectedMoment
                   );

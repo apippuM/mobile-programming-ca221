@@ -25,7 +25,7 @@ class PostTitle extends StatelessWidget {
       leading: const CircleAvatar(
         backgroundImage: NetworkImage('https://i.pravatar.cc/150'),
       ),
-      trailing:   PopupMenuButton(
+      trailing: PopupMenuButton(
         onSelected: (value) {
           if (value == 'Edit') {
             onUpdate(moment.id);

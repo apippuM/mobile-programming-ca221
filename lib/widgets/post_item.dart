@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/moments.dart';
-import 'package:myapp/pages/create_comment.dart';
+import 'package:myapp/pages/comment_page.dart';
 import 'package:myapp/resources/dimentions.dart';
 import 'package:myapp/widgets/post_action.dart';
 import 'package:myapp/widgets/post_title.dart';
@@ -60,7 +60,7 @@ class PostItem extends StatelessWidget {
                         label: moment.commentCount.toString(),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                            return const CreateComment();
+                            return CommentPage(id: moment.id, onUpdate: onUpdate, onDelete: onDelete);
                           }));
                         },
                       ),
