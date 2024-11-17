@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/models/moments.dart';
 import 'package:myapp/resources/colors.dart';
 import 'package:myapp/resources/dimentions.dart';
 import 'package:nanoid2/nanoid2.dart';
 
 class MomentCreatePage extends StatefulWidget {
-  const MomentCreatePage({super.key, required this.onSaved});
+  const MomentCreatePage({
+    super.key, 
+    required this.onSaved,
+    this.selectedMoment});
 
   final Function(Moment newMoment) onSaved;
+  final Moment? selectedMoment;
 
   @override
   State<MomentCreatePage> createState() => _MomentCreatePageState();
@@ -18,6 +23,31 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
   final _formKey = GlobalKey<FormState>();
   final _dataMoment = {};
 
+  // Text Editing Controller
+  final _momentDateController = TextEditingController();
+  final _creatorController = TextEditingController();
+  final _locationController = TextEditingController();
+  final _imageUrlController = TextEditingController();
+  final _captionController = TextEditingController();
+  final _dateFormat = DateFormat('yyyy-MM-dd');
+  late DateTime _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.selectedMoment != null) {
+      final selectedMoment = widget.selectedMoment!;
+      _momentDateController.text = _dateFormat.format(selectedMoment.momentDate);
+      _creatorController.text = selectedMoment.creator;
+      _locationController.text = selectedMoment.location;
+      _imageUrlController.text = selectedMoment.imageUrl;
+      _captionController.text = selectedMoment.caption;
+      _selectedDate = selectedMoment.momentDate;
+    } else {
+      _selectedDate = DateTime.now();
+    }
+  }
+
   // Form data save method
   void _saveMoment() {
     if (_formKey.currentState!.validate()) {
@@ -25,12 +55,15 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
       _formKey.currentState!.save();
       // Create new object from form data
       final moment = Moment(
-        id: nanoid(),
+        id: widget.selectedMoment?.id ?? nanoid(),
         momentDate: _dataMoment['momentDate'],
         creator: _dataMoment['creator'],
         location: _dataMoment['location'],
         imageUrl: _dataMoment['imageUrl'],
         caption: _dataMoment['caption'],
+        likeCount: widget.selectedMoment?.likeCount ?? 0,
+        commentCount: widget.selectedMoment?.commentCount ?? 0,
+        bookmarkCount: widget.selectedMoment?.bookmarkCount ?? 0
       );
       widget.onSaved(moment);
       // Navigasi ke halaman home
@@ -38,11 +71,28 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
     }
   }
 
+  void _pickDate() async {
+    final todayDate = DateTime.now();
+    final firstDate = todayDate.subtract(const Duration(days: 365));
+    final selectedDate = await showDatePicker(
+      context: context,
+      firstDate: firstDate,
+      lastDate: todayDate,
+      initialDate: _selectedDate.isAfter(todayDate) ? null :_selectedDate,
+    );
+    if (selectedDate != null) {
+        setState(() {
+          _momentDateController.text = _dateFormat.format(selectedDate);
+        });
+      }
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Moment'),
+        title: Text(
+          '${widget.selectedMoment == null ? 'Create' : 'Update'} Moment'),
         centerTitle: true
       ),
       body: Padding(
@@ -58,6 +108,8 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
                   child: Text('Moment Date'),
                 ), 
                 TextFormField(
+                  controller: _momentDateController,
+                  onTap: _pickDate,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(extraLargeSize)
@@ -85,6 +137,7 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
                   child: Text('Creator'),
                 ),
                 TextFormField(
+                  controller: _creatorController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(extraLargeSize)
@@ -110,6 +163,7 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
                   child: Text('Location'),
                 ),
                 TextFormField(
+                  controller: _locationController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(extraLargeSize)
@@ -135,6 +189,7 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
                   child: Text('Image URL'),
                 ),
                 TextFormField(
+                  controller: _imageUrlController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(extraLargeSize)
@@ -160,6 +215,7 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
                   child: Text('Caption'),
                 ),
                 TextFormField(
+                  controller: _captionController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(extraLargeSize)
@@ -187,7 +243,8 @@ class _MomentCreatePageState extends State<MomentCreatePage> {
                     backgroundColor: primaryColor,
                     foregroundColor: Colors.white
                   ),
-                  child: const Text('Create Moment'),
+                  child: Text(
+                    widget.selectedMoment == null ? 'Save' : 'Update'),
                 ),
                 const SizedBox(height: mediumSize,),
                 OutlinedButton(

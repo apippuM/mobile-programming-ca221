@@ -38,6 +38,7 @@ dependencies:
   standard_searchbar: ^2.1.1
   nanoid2: ^2.0.1
   faker: ^2.2.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

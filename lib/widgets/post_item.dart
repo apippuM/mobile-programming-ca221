@@ -6,9 +6,15 @@ import 'package:myapp/widgets/post_action.dart';
 import 'package:myapp/widgets/post_title.dart';
 
 class PostItem extends StatelessWidget {
-  const PostItem({super.key, required this.moment});
+  const PostItem({
+    super.key, 
+    required this.moment,
+    required this.onUpdate,
+    required this.onDelete,});
 
   final Moment moment;
+  final Function(String id) onUpdate;
+  final Function(String id) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,11 @@ class PostItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PostTitle(creator: moment.creator, location: moment.location,),
+            PostTitle(
+              moment: moment,
+              onUpdate: onUpdate,
+              onDelete: onDelete
+              ),
             Padding(
               padding: const EdgeInsets.all(smallSize),
               child: Column(
