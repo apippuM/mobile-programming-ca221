@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/models/comment.dart';
-import 'package:myapp/pages/create_comment.dart';
+import 'package:myapp/views/comment/pages/create_comment.dart';
 import 'package:faker/faker.dart' as faker;
 import 'package:nanoid2/nanoid2.dart';
+// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
 class CommentPage extends StatefulWidget {

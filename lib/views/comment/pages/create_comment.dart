@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:myapp/resources/colors.dart';
-import 'package:myapp/resources/dimentions.dart';
+import 'package:myapp/core/resources/colors.dart';
+import 'package:myapp/core/resources/dimentions.dart';
 import 'package:nanoid2/nanoid2.dart';
 import 'package:myapp/models/comment.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/moments.dart';
-import 'package:myapp/pages/comment_page.dart';
-import 'package:myapp/resources/dimentions.dart';
-import 'package:myapp/widgets/post_action.dart';
-import 'package:myapp/widgets/post_title.dart';
+import 'package:myapp/views/comment/pages/comment_page.dart';
+import 'package:myapp/core/resources/dimentions.dart';
+import 'package:myapp/views/moment/widgets/post_action.dart';
+import 'package:myapp/views/moment/widgets/post_title.dart';
 
 class PostItem extends StatelessWidget {
   const PostItem({

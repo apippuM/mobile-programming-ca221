@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/moments.dart';
-import 'package:myapp/resources/colors.dart';
+import 'package:myapp/core/resources/colors.dart';
 
 class PostTitle extends StatelessWidget {
   const PostTitle({

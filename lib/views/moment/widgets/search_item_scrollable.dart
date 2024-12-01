@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/widgets/search_item.dart';
+import 'package:myapp/views/moment/widgets/search_item.dart';
 
 class SearchItemScrollable extends StatelessWidget {
   const SearchItemScrollable({super.key});

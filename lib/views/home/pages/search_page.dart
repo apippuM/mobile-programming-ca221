@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/widgets/search_item_scrollable.dart';
+import 'package:myapp/views/moment/widgets/search_item_scrollable.dart';
 import 'package:standard_searchbar/new/standard_icons.dart';
 import 'package:standard_searchbar/new/standard_search_anchor.dart';
 import 'package:standard_searchbar/new/standard_search_bar.dart';

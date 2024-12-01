@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/resources/dimentions.dart';
+import 'package:myapp/core/resources/dimentions.dart';
 
 class SearchItem extends StatelessWidget {
   const SearchItem({super.key});
