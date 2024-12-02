@@ -8,13 +8,9 @@ import 'package:myapp/views/moment/widgets/post_title.dart';
 class PostItem extends StatelessWidget {
   const PostItem({
     super.key, 
-    required this.moment,
-    required this.onUpdate,
-    required this.onDelete,});
+    required this.moment});
 
   final Moment moment;
-  final Function(String id) onUpdate;
-  final Function(String id) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +34,6 @@ class PostItem extends StatelessWidget {
           children: [
             PostTitle(
               moment: moment,
-              onUpdate: onUpdate,
-              onDelete: onDelete
               ),
             Padding(
               padding: const EdgeInsets.all(smallSize),
@@ -60,7 +54,7 @@ class PostItem extends StatelessWidget {
                         label: moment.commentCount.toString(),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                            return CommentPage(id: moment.id, onUpdate: onUpdate, onDelete: onDelete);
+                            return CommentPage(id: moment.id);
                           }));
                         },
                       ),
@@ -91,4 +85,6 @@ class PostItem extends StatelessWidget {
       ),
     );
   }
+
+  toList() {}
 }

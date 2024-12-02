@@ -11,12 +11,8 @@ class CommentPage extends StatefulWidget {
   const CommentPage({
     super.key, 
     required this.id,
-    required this.onUpdate,
-    required this.onDelete
     });
   final String id;
-  final Function (String id) onUpdate;
-  final Function (String id) onDelete;
 
   @override
   State<CommentPage> createState() => _CommentPageState();
