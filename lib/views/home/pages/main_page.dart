@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/views/moment/bloc/moment_bloc.dart';
 import 'package:myapp/views/moment/pages/moment_page.dart';
-import 'package:myapp/views/moment/pages/moment_entry_page.dart';
 import 'package:myapp/views/moment/pages/moment_search_page.dart';
 import 'package:myapp/core/resources/colors.dart';
 
