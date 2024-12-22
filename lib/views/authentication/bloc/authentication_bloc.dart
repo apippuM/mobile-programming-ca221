@@ -42,7 +42,7 @@ class AuthenticationBloc
       emit(AuthenticationLoadingState());
       final isAuthenticated = await _authRepository.isAuthenticated();
       if (isAuthenticated) {
-        activeUser = await _authRepository.info(event.force);
+        activeUser = await _authRepository.info();
         emit(AuthenticationAuthenticatedState(activeUser));
       } else {
         emit(AuthenticationUnauthenticatedState());
@@ -60,7 +60,6 @@ class AuthenticationBloc
       final (loginResult, message) =
           await _authRepository.login(event.userData);
       if (loginResult) {
-        activeUser = await _authRepository.info(true);
         emit(AuthenticationSigninInSuccessActionState(activeUser));
       } else {
         emit(AuthenticationSignInErrorActionState(message));
@@ -106,7 +105,6 @@ class AuthenticationBloc
       emit(AuthenticationLoadingState());
       await _authRepository.logout();
       emit(AuthenticationLogOutSuccessActionState());
-      SystemNavigator.pop();
     } catch (er) {
       emit(AuthenticationLogOutErrorActionState(er.toString()));
     }

@@ -11,6 +11,6 @@ final blocProviders = [
   ),
   BlocProvider<MomentBloc>(
     create: (context) =>
-        MomentBloc(RepositoryProvider.of<AbsMomentRepository>(context)),
+        MomentBloc(context.read<AbsMomentRepository>()),
   ),
 ];

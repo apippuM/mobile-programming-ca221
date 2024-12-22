@@ -5,7 +5,7 @@ import '../../views/authentication/pages/register_page.dart';
 import '../../views/authentication/widgets/authentication_navigator.dart';
 import '../../views/comment/pages/comment_page.dart';
 import '../../views/comment/pages/commment_entry_page.dart';
-import '../../views/common/pages/main_page.dart';
+import '../../views/common/pages/home_page.dart';
 import '../../views/moment/pages/moment_entry_page.dart';
 
 class AppRouter {
@@ -13,8 +13,8 @@ class AppRouter {
     switch (settings.name) {
       case AuthenticationNavigator.routeName:
         return MaterialPageRoute(builder: (_) => const AuthenticationNavigator());
-      case MainPage.routeName:
-        return MaterialPageRoute(builder: (_) => const MainPage());
+      case HomePage.routeName:
+        return MaterialPageRoute(builder: (_) => const HomePage());
       case LoginPage.routeName:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case RegisterPage.routeName:
@@ -32,7 +32,7 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => CommentEntryPage(commentId: commentId));
       default:
-        return MaterialPageRoute(builder: (_) => const MainPage());
+        return MaterialPageRoute(builder: (_) => const HomePage());
     }
   }
 }
