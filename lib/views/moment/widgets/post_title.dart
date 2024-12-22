@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/core/resources/colors.dart';
 
 import '../../../models/moment.dart';
+import '../../authentication/bloc/authentication_bloc.dart';
 import '../bloc/moment_bloc.dart';
 
 class PostTitle extends StatelessWidget {
@@ -14,6 +15,7 @@ class PostTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userActiveId = context.read<AuthenticationBloc>().activeUser?.id;
     return ListTile(
       title: Text(
         moment.creatorUsername.toString(),
@@ -25,7 +27,7 @@ class PostTitle extends StatelessWidget {
       leading: const CircleAvatar(
         backgroundImage: NetworkImage('https://i.pravatar.cc/150'),
       ),
-      trailing: PopupMenuButton<String>(
+      trailing: moment.creatorId == userActiveId ? PopupMenuButton<String>(
         onSelected: (value) {
           if (value == 'Edit') {
             context
@@ -54,7 +56,7 @@ class PostTitle extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-      ),
+      ) : null,
     );
   }
 }
