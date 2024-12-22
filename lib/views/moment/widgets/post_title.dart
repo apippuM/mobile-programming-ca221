@@ -27,36 +27,38 @@ class PostTitle extends StatelessWidget {
       leading: const CircleAvatar(
         backgroundImage: NetworkImage('https://i.pravatar.cc/150'),
       ),
-      trailing: moment.creatorId == userActiveId ? PopupMenuButton<String>(
-        onSelected: (value) {
-          if (value == 'Edit') {
-            context
-                .read<MomentBloc>()
-                .add(MomentNavigateToUpdateEvent(moment.id!));
-          } else if (value == 'Delete') {
-            context
-                .read<MomentBloc>()
-                .add(MomentNavigateToDeleteEvent(moment.id!));
-          }
-        },
-        itemBuilder: (context) => [
-          const PopupMenuItem(
-            value: 'Edit',
-            child: Text('Edit'),
-          ),
-          const PopupMenuItem(
-            value: 'Delete',
-            child: Text('Delete'),
-          ),
-        ],
-        child: CircleAvatar(
-          backgroundColor: Colors.white.withOpacity(0.5),
-          child: const Icon(
-            Icons.more_vert,
-            color: primaryColor,
-          ),
-        ),
-      ) : null,
+      trailing: moment.creatorId == userActiveId
+          ? PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'Edit') {
+                  context
+                      .read<MomentBloc>()
+                      .add(MomentNavigateToUpdateEvent(moment.id!));
+                } else if (value == 'Delete') {
+                  context
+                      .read<MomentBloc>()
+                      .add(MomentNavigateToDeleteEvent(moment.id!));
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'Edit',
+                  child: Text('Edit'),
+                ),
+                const PopupMenuItem(
+                  value: 'Delete',
+                  child: Text('Delete'),
+                ),
+              ],
+              child: CircleAvatar(
+                backgroundColor: Colors.white.withOpacity(0.5),
+                child: const Icon(
+                  Icons.more_vert,
+                  color: primaryColor,
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

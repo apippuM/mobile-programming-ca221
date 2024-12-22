@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:myapp/models/moment.dart';
+
 import 'package:myapp/models/user.dart';
-import 'package:myapp/repositories/contracts/abs_api_user_data_repository.dart';
 
 import '../../core/helpers/dio_interceptor.dart';
 import '../../core/resources/constants.dart';
+import '../contracts/abs_api_user_data_repository.dart';
 
 class ApiUserDataRepository extends AbsApiUserDataRepository {
-
   late String _baseUri;
   late Dio _dio;
   late BaseOptions _options;
@@ -42,9 +42,12 @@ class ApiUserDataRepository extends AbsApiUserDataRepository {
   }
 
   @override
-  Future<List<Moment>> getAllMoments([String keyword = '']) async{
+  Future<List<Moment>> getAllMoments([String keyword = '']) async {
     try {
-      final response = await _dio.get('/moments', queryParameters: {'keyword': keyword});
+      final response = await _dio.get(
+        '/moments',
+        queryParameters: {'keyword': keyword},
+      );
       if (response.statusCode == 200) {
         return (response.data as List).map((e) => Moment.fromMap(e)).toList();
       }
@@ -59,5 +62,4 @@ class ApiUserDataRepository extends AbsApiUserDataRepository {
     // TODO: implement unfollow
     throw UnimplementedError();
   }
-
 }

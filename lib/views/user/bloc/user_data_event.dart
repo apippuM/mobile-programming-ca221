@@ -7,4 +7,4 @@ sealed class UserDataEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class UserDataLoadEvent extends UserDataEvent {}
+class UserDataLoadEvent extends UserDataEvent {}

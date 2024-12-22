@@ -1,10 +1,11 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import '../contracts/abs_api_moment_repository.dart';
+import 'package:myapp/models/moment.dart';
+
 import '../../core/helpers/dio_interceptor.dart';
 import '../../core/resources/constants.dart';
-import 'package:myapp/models/moment.dart';
+import '../contracts/abs_api_moment_repository.dart';
 
 class ApiMomentRepository extends AbsApiMomentRepository {
   final _baseUri = '$baseUrl/api/moments';
@@ -18,9 +19,9 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     _dio = Dio(_options);
     _dio.interceptors.add(DioInterceptor(dio: _dio));
   }
-  
+
   @override
-  Future<Moment?> create(Moment newData) async{
+  Future<Moment?> create(Moment newData) async {
     try {
       final response = await _dio.post('', data: newData.toMap());
       if (response.statusCode == 201) {
@@ -31,7 +32,6 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     }
     return null;
   }
-  
   @override
   Future<bool> delete(String id) async {
     try {
@@ -44,11 +44,14 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     }
     return false;
   }
-  
+
   @override
   Future<List<Moment>> getAll([String keyword = '']) async {
     try {
-      final response = await _dio.get('/all', queryParameters: {'keyword': keyword});
+      final response = await _dio.get(
+        '/all',
+        queryParameters: {'keyword': keyword},
+      );
       if (response.statusCode == 200) {
         return (response.data as List).map((e) => Moment.fromMap(e)).toList();
       }
@@ -57,7 +60,6 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     }
     return [];
   }
-  
   @override
   Future<Moment?> getById(String id) async {
     try {
@@ -70,11 +72,19 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     }
     return null;
   }
-  
+
   @override
-  Future<List<Moment>> getWithPagination([int page = 1, int size = 10, String keyword = '']) async {
+  Future<List<Moment>> getWithPagination(
+      [int page = 1, int size = 10, String keyword = '']) async {
     try {
-      final response = await _dio.get('', queryParameters: {'PageNumber': page, 'size': size, 'Keyword': keyword});
+      final response = await _dio.get(
+        '',
+        queryParameters: {
+          'PageNumber': page,
+          'PageSize': size,
+          'Keyword': keyword,
+        },
+      );
       if (response.statusCode == 200) {
         return (response.data as List).map((e) => Moment.fromMap(e)).toList();
       }
@@ -83,7 +93,6 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     }
     return [];
   }
-  
   @override
   Future<bool> update(Moment updatedData) async {
     try {

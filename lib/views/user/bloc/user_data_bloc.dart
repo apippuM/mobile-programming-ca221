@@ -3,9 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:myapp/repositories/contracts/abs_api_user_data_repository.dart';
-
-import '../../../models/moment.dart';
+import 'package:myapp/models/moment.dart';
+import '../../../repositories/contracts/abs_api_user_data_repository.dart';
 
 part 'user_data_event.dart';
 part 'user_data_state.dart';
@@ -17,16 +16,17 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     on<UserDataLoadEvent>(userDataLoadEvent);
   }
 
-  List<Moment> get userMoments => _userMoments = [];
+  List<Moment> get userMoments => _userMoments;
 
-  FutureOr<void> userDataLoadEvent(UserDataLoadEvent event, Emitter<UserDataState> emit) async {
+  FutureOr<void> userDataLoadEvent(
+      UserDataLoadEvent event, Emitter<UserDataState> emit) async {
     emit(UserDataLoadingState());
     try {
       _userMoments = await _apiUserDataRepository.getAllMoments();
-      emit(UserDataLoadedState(_userMoments));
+      emit(UserDataLoadedSuccessState(_userMoments));
     } catch (e) {
       log(e.toString(), name: 'UserDataBloc:userDataLoadEvent');
-      emit(UserDataLoadErrorActionState(e.toString()));
+      emit(const UserDataLoadErrorActionState('Failed to load user data.'));
     }
   }
 }
