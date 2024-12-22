@@ -17,21 +17,11 @@ class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activeUser = context.watch<AuthenticationBloc>().activeUser;
-    final oFaker = faker.Faker();
-    List<Moment> moments = List.generate(
-      6,
-      (index) => Moment(
-        id: nanoid(),
-        momentDate: oFaker.date.dateTime(),
-        creatorUsername: oFaker.person.name(),
-        location: oFaker.address.city(),
-        imageUrl: 'https://picsum.photos/800/600?random=$index',
-        caption: oFaker.lorem.sentence(),
-        totalLikes: faker.random.integer(1000),
-        totalComments: faker.random.integer(100),
-        totalBookmarks: faker.random.integer(10),
-      ),
-    );
+    return BlocConsumer<UserDataBloc, UserDataState>(
+      listener: (context, state) {
+        if (state  is UserDataLoadErrorAction)
+      }
+    )
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: largeSize),
       child: Column(

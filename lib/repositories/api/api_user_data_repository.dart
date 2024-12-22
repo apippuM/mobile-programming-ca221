@@ -1,17 +1,21 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:myapp/models/moment.dart';
-import 'package:myapp/repositories/contracts/abs_api_moment_repository.dart';
+import 'package:myapp/models/user.dart';
+import 'package:myapp/repositories/contracts/abs_api_user_data_repository.dart';
 
 import '../../core/helpers/dio_interceptor.dart';
 import '../../core/resources/constants.dart';
 
-class ApiUserDataRepository extends AbsApiMomentRepository {
+class ApiUserDataRepository extends AbsApiUserDataRepository {
 
-  final _baseUri = '$baseUrl/api/moments';
+  late String _baseUri;
   late Dio _dio;
   late BaseOptions _options;
 
-  ApiUserDataRepository() {
+  ApiUserDataRepository(String? userId) {
+    _baseUri = '$baseUrl/api/users/$userId';
     _options = BaseOptions(
       baseUrl: _baseUri,
     );
@@ -20,38 +24,40 @@ class ApiUserDataRepository extends AbsApiMomentRepository {
   }
 
   @override
-  Future<Moment?> create(Moment newData) {
-    // TODO: implement create
+  Future<bool> follow(String userId) {
+    // TODO: implement follow
     throw UnimplementedError();
   }
 
   @override
-  Future<bool> delete(String id) {
-    // TODO: implement delete
+  Future<List<User>> getAllFollings([String keyword = '']) {
+    // TODO: implement getAllFollings
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Moment>> getAll([String keyword = '']) {
-    // TODO: implement getAll
+  Future<List<User>> getAllFollowers([String keyword = '']) {
+    // TODO: implement getAllFollowers
     throw UnimplementedError();
   }
 
   @override
-  Future<Moment?> getById(String id) {
-    // TODO: implement getById
-    throw UnimplementedError();
+  Future<List<Moment>> getAllMoments([String keyword = '']) async{
+    try {
+      final response = await _dio.get('/moments', queryParameters: {'keyword': keyword});
+      if (response.statusCode == 200) {
+        return (response.data as List).map((e) => Moment.fromMap(e)).toList();
+      }
+    } catch (e) {
+      log(e.toString(), name: 'ApiMomentRepository:getAll');
+    }
+    return [];
   }
 
   @override
-  Future<List<Moment>> getWithPagination([int page = 1, int size = 10, String keyword = '']) {
-    // TODO: implement getWithPagination
+  Future<bool> unfollow(String userId) {
+    // TODO: implement unfollow
     throw UnimplementedError();
   }
 
-  @override
-  Future<bool> update(Moment updatedData) {
-    // TODO: implement update
-    throw UnimplementedError();
-  }
 }
