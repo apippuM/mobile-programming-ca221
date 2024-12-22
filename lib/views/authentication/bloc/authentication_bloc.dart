@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:myapp/models/user.dart';
@@ -18,7 +16,6 @@ class AuthenticationBloc
   AuthenticationBloc(this._authRepository)
       : super(AuthenticationInitialState()) {
     on<AuthenticationLoadEvent>(authenticationLoadEvent);
-
     on<AuthenticationLoggedInEvent>(authenticationLoggedInEvent);
     on<AuthenticationRegisterEvent>(authenticationRegisterEvent);
     on<AuthenticationForgotPasswordEvent>(authenticationForgotPasswordEvent);

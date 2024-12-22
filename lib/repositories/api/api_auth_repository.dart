@@ -30,11 +30,13 @@ class ApiAuthRepository extends AbsAuthRepository {
   Future<User?> info() async {
     try {
       final spm = await SharedPreferencesManager.getInstance();
-      if (spm != null && spm.isKeyExists(SharedPreferencesManager.keyActiveUser)) {
-        return User.fromJson(spm.getString(SharedPreferencesManager.keyActiveUser)!);
+      if (spm != null &&
+          spm.isKeyExists(SharedPreferencesManager.keyActiveUser)) {
+        return User.fromJson(
+            spm.getString(SharedPreferencesManager.keyActiveUser)!);
       }
     } catch (e) {
-      log(e.toString(), name: 'ApiAuthRepository:isAuthenticated');
+      log(e.toString(), name: 'ApiAuthRepository:info');
     }
     return null;
   }
@@ -43,8 +45,10 @@ class ApiAuthRepository extends AbsAuthRepository {
   Future<bool> isAuthenticated() async {
     try {
       final spm = await SharedPreferencesManager.getInstance();
-      if (spm != null && spm.isKeyExists(SharedPreferencesManager.keyAccessToken)) {
-        final accessToken = spm.getString(SharedPreferencesManager.keyAccessToken);
+      if (spm != null &&
+          spm.isKeyExists(SharedPreferencesManager.keyAccessToken)) {
+        final accessToken =
+            spm.getString(SharedPreferencesManager.keyAccessToken);
         final expiryDate = _getExpiryDate(accessToken!);
         if (expiryDate != null && expiryDate.isAfter(DateTime.now())) {
           return true;
@@ -61,15 +65,24 @@ class ApiAuthRepository extends AbsAuthRepository {
     try {
       final response = await _dio.post('/login', data: dataLogin.toMap());
       if (response.statusCode == 200) {
+        // Penyimpanan token dan data user
         final spm = await SharedPreferencesManager.getInstance();
         if (spm != null) {
-          await spm.putString(SharedPreferencesManager.keyAccessToken, response.data['accessToken']);
-          await spm.putString(SharedPreferencesManager.keyRefreshToken, response.data['refreshToken']);
+          // Menyimpan accessToken
+          await spm.putString(SharedPreferencesManager.keyAccessToken,
+              response.data['accessToken']);
+          // Menyimpan refreshToken
+          await spm.putString(SharedPreferencesManager.keyRefreshToken,
+              response.data['refreshToken']);
+          // Menyimpan data User
           final activeUser = User.fromMap(response.data['userData']);
-          await spm.putString(SharedPreferencesManager.keyActiveUser, activeUser.toJson());
+          await spm.putString(
+            SharedPreferencesManager.keyActiveUser,
+            activeUser.toJson(),
+          );
         }
       }
-      return (true, 'User authentication successful');
+      return (true, "User authentication success");
     } catch (e) {
       log(e.toString(), name: 'ApiAuthRepository:login');
     }
@@ -92,13 +105,25 @@ class ApiAuthRepository extends AbsAuthRepository {
   Future<bool> refreshToken() async {
     try {
       final spm = await SharedPreferencesManager.getInstance();
-      if (spm != null && spm.isKeyExists(SharedPreferencesManager.keyRefreshToken)) {
-        final response = await _dio.post('/refresh-token', data: {'refreshToken': spm.getString(SharedPreferencesManager.keyRefreshToken)});
+      if (spm != null &&
+          spm.isKeyExists(SharedPreferencesManager.keyRefreshToken)) {
+        final response = await _dio.post('/refresh-token', data: {
+          'refreshToken':
+              spm.getString(SharedPreferencesManager.keyRefreshToken),
+        });
         if (response.statusCode == 200) {
-          await spm.putString(SharedPreferencesManager.keyAccessToken, response.data['accessToken']);
-          await spm.putString(SharedPreferencesManager.keyRefreshToken, response.data['refreshToken']);
+          // Menyimpan accessToken
+          await spm.putString(SharedPreferencesManager.keyAccessToken,
+              response.data['accessToken']);
+          // Menyimpan refreshToken
+          await spm.putString(SharedPreferencesManager.keyRefreshToken,
+              response.data['refreshToken']);
+          // Menyimpan data User
           final activeUser = User.fromMap(response.data['userData']);
-          await spm.putString(SharedPreferencesManager.keyActiveUser, activeUser.toJson());
+          await spm.putString(
+            SharedPreferencesManager.keyActiveUser,
+            activeUser.toJson(),
+          );
         }
       }
       return true;
@@ -113,12 +138,12 @@ class ApiAuthRepository extends AbsAuthRepository {
     try {
       final response = await _dio.post('/register', data: dataRegister.toMap());
       if (response.statusCode == 204) {
-        return (true, 'User registration successful');
+        return (true, "User registration success");
       }
     } catch (e) {
       log(e.toString(), name: 'ApiAuthRepository:register');
     }
-    return (false, 'Failed to authenticate new user');
+    return (false, 'Failed to register new user');
   }
 
   DateTime? _getExpiryDate(String token) {

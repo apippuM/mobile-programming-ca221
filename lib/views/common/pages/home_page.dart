@@ -5,7 +5,8 @@ import 'package:myapp/views/moment/bloc/moment_bloc.dart';
 import 'package:myapp/views/moment/pages/moment_page.dart';
 import 'package:myapp/views/moment/pages/moment_search_page.dart';
 import 'package:myapp/core/resources/colors.dart';
-import 'package:myapp/views/user/pages/user_page.dart';
+
+import '../../user/pages/user_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/home';
