@@ -6,7 +6,7 @@ import '../bloc/comment_bloc.dart';
 import 'commment_entry_page.dart';
 
 class CommentPage extends StatefulWidget {
-  static const routeName = '/comments';
+  static const routeName = '/comment';
   const CommentPage({super.key, required this.momentId});
   final String momentId;
 
