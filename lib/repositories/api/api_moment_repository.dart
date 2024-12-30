@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:myapp/models/moment.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/helpers/dio_interceptor.dart';
 import '../../core/resources/constants.dart';
@@ -65,7 +66,13 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     try {
       final response = await _dio.get('/$id');
       if (response.statusCode == 200) {
-        return Moment.fromMap(response.data);
+        final moment = Moment.fromMap(response.data);
+
+        // Store ID in SharedPreferencesManager
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('last_retrieved_moment_id', id);
+
+        return moment;
       }
     } catch (e) {
       log(e.toString(), name: 'ApiMomentRepository:getById');
@@ -105,4 +112,14 @@ class ApiMomentRepository extends AbsApiMomentRepository {
     }
     return false;
   }
+
+  Future<String?> getLastRetrievedMomentId() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('last_retrieved_moment_id');
+    } catch (e) {
+      log(e.toString(), name: 'ApiMomentRepository:getLastRetrievedMomentId');
+      return null;
+    }
+  } 
 }

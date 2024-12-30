@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/core/helpers/shared_preference_manager.dart';
+import 'package:myapp/repositories/contracts/abs_api_comment_repository.dart';
 import 'package:myapp/repositories/contracts/abs_api_moment_repository.dart';
 
 import '../../repositories/api/api_auth_repository.dart';
+import '../../repositories/api/api_comment_repository.dart';
 import '../../repositories/api/api_moment_repository.dart';
 import '../../repositories/api/api_user_data_repository.dart';
 import '../../repositories/contracts/abs_api_user_data_repository.dart';
@@ -26,4 +28,11 @@ final repositoryProviders = [
   RepositoryProvider<AbsApiUserDataRepository>(
     create: (context) => ApiUserDataRepository(activeUserId),
   ),
+  RepositoryProvider<AbsApiCommentRepository>(
+    create: (context) {
+      final spm = SharedPreferencesManager();
+      final momentId = spm.getString('last_retrieved_moment_id');
+      return ApiCommentRepository(momentId);
+    }
+  )
 ];
