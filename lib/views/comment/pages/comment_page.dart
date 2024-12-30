@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:myapp/models/comment.dart';
-import 'package:faker/faker.dart' as faker;
-import 'package:nanoid2/nanoid2.dart';
 
+import '../bloc/comment_bloc.dart';
 import 'commment_entry_page.dart';
 
 class CommentPage extends StatefulWidget {
@@ -16,49 +15,61 @@ class CommentPage extends StatefulWidget {
 }
 
 class _CommentPageState extends State<CommentPage> {
-  List<Comment> _comments = [];
-  final _faker = faker.Faker();
   final _dateFormat = DateFormat('dd MMM yyyy');
 
   @override
   void initState() {
     super.initState();
-    _comments = List.generate(
-      5,
-      (index) => Comment(
-        id: nanoid(),
-        creatorUsername: _faker.person.name(),
-        content: _faker.lorem.sentence(),
-        createdAt: _faker.date.dateTime(),
-        momentId: widget.momentId,
-      ),
-    );
+    context.read<CommentBloc>().add(CommentLoadEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Comment'),
+        title: const Text('Comments'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: _comments
-              .map((comment) => ListTile(
-                    title: Text(comment.creatorUsername.toString()),
-                    subtitle: Text(comment.content),
-                    leading: const CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('https://i.pravatar.cc/150'),
-                    ),
-                    trailing: Text(_dateFormat.format(comment.createdAt)),
-                  ))
-              .toList(),
-        ),
+      body: BlocConsumer<CommentBloc, CommentState>(
+        listener: (context, state) {
+          if (state is CommentLoadErrorActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          } else if (state is CommentAddedSuccessState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Comment added successfully!')),
+            );
+          } else if (state is CommentNavigateToAddActionState) {
+            Navigator.of(context).pushNamed(CommentEntryPage.routeName);
+          }
+        },
+        builder: (context, state) {
+          if (state is CommentLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is CommentLoadedSuccessState) {
+            return ListView.builder(
+              itemCount: state.comments.length,
+              itemBuilder: (context, index) {
+                final comment = state.comments[index];
+                return ListTile(
+                  title: Text(comment.creatorUsername ?? 'Anonymous'),
+                  subtitle: Text(comment.content),
+                  leading: const CircleAvatar(
+                    backgroundImage: NetworkImage('https://i.pravatar.cc/150'),
+                  ),
+                  trailing: Text(_dateFormat.format(comment.createdAt)),
+                );
+              },
+            );
+          } else if (state is CommentLoadErrorActionState) {
+            return Center(child: Text(state.message));
+          }
+          return const Center(child: Text('No comments available.'));
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(CommentEntryPage.routeName);
+          context.read<CommentBloc>().add(CommentNavigateToAddEvent());
         },
         child: const Icon(Icons.comment),
       ),
